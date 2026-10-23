@@ -47,18 +47,23 @@ def send_multicast(tokens: list[str], title: str, body: str, data: dict[str, str
     """
     if not tokens:
         return 0, [], is_dry_run()
-    if is_dry_run():
-        logger.info("[dry-run] FCM multicast to %d devices: %s - %s", len(tokens), title, body[:80])
-        return len(tokens), [], True
 
+    # Build the message BEFORE the dry-run branch so construction errors
+    # (bad kwargs etc.) surface in dry-run tests too, not only in production.
     from firebase_admin import messaging
 
+    android_priority = {
+        "critical": "max",
+        "warning": "high",
+        "info": "default",
+        "silent": "min",
+    }.get(level, "default")
     notification = messaging.Notification(title=title, body=body)
     android_config = messaging.AndroidConfig(
         priority="high",
         notification=messaging.AndroidNotification(
             channel_id=android_channel_id,
-            notification_priority="priority_max" if level == "critical" else "priority_high",
+            priority=android_priority,
             default_sound=True,
             click_action="OPEN_MESSAGE_DETAIL",
         ),
@@ -68,6 +73,10 @@ def send_multicast(tokens: list[str], title: str, body: str, data: dict[str, str
         tokens=tokens, notification=notification, android=android_config,
         data={k: str(v) for k, v in data.items()},
     )
+
+    if is_dry_run():
+        logger.info("[dry-run] FCM multicast to %d devices: %s - %s", len(tokens), title, body[:80])
+        return len(tokens), [], True
     try:
         resp = messaging.send_each_for_multicast(message)
     except Exception as exc:
