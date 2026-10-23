@@ -53,7 +53,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             PulsePushTheme {
                 val isLoggedIn by preferences.accessToken
-                    .map { token -> token?.let { it.isNotBlank() } }
+                    // Must emit a definite Boolean: mapping a missing token to
+                    // null collides with collectAsState's "still loading"
+                    // sentinel and leaves fresh installs on the spinner forever.
+                    .map { token -> !token.isNullOrBlank() }
                     .collectAsState(initial = null)
 
                 if (isLoggedIn == null) {

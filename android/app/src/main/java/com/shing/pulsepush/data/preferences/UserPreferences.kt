@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "pulsepush_settings")
 
-const val DEFAULT_SERVER_URL = "https://push.example.com/"
+const val DEFAULT_SERVER_URL = "https://pulsepush.lxj.link/"
 
 /**
  * Synchronous holders that OkHttp interceptors can read without blocking.
