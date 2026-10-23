@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: .
+    image: pulsepush-backend
+    container_name: pulsepush-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "sqlite+aiosqlite:////data/webhook_push.db"
+      JWT_SECRET: "${JWT_SECRET:?set JWT_SECRET in .env}"
+      FIREBASE_CREDENTIALS: "/run/secrets/firebase-sa.json"
+      BASE_URL: "${BASE_URL:-http://localhost:8000}"
+      RATE_LIMIT_PER_MINUTE: "60"
+    volumes:
+      - pulsepush-data:/data
+      - ./secret/firebase-sa.json:/run/secrets/firebase-sa.json:ro
+
+volumes:
+  pulsepush-data:
