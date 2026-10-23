@@ -90,6 +90,8 @@ def send_multicast(tokens: list[str], title: str, body: str, data: dict[str, str
             success += 1
         else:
             exc = r.exception
+            logger.warning("FCM send failed for token #%d: %s (%s)", idx,
+                           exc.__class__.__name__ if exc else "?", exc)
             reason = None
             if isinstance(exc, messaging.UnregisteredError):
                 reason = "UNREGISTERED"
@@ -97,6 +99,10 @@ def send_multicast(tokens: list[str], title: str, body: str, data: dict[str, str
                 reason = "SENDER_ID_MISMATCH"
             elif exc is not None and "registration-token-not-registered" in str(exc):
                 reason = "UNREGISTERED"
+            elif exc is not None and exc.__class__.__name__ == "InvalidArgumentError" \
+                    and "not a valid FCM registration token" in str(exc):
+                # Malformed token can never succeed; prune it too (NFR self-healing).
+                reason = "INVALID_TOKEN"
             if reason and idx < len(tokens):
                 invalid.append((tokens[idx], reason))
     return success, invalid, False
