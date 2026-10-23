@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "310764903208",
+    "project_id": "webhook-push-2bc7c",
+    "storage_bucket": "webhook-push-2bc7c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310764903208:android:4db5dd0b671337dd954e1d",
+        "android_client_info": {
+          "package_name": "com.shing.pulsepush"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvKs9hFwmPO373KK2WHKyHU0l2jPFL0q4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

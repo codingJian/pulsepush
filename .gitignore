@@ -1,0 +1,23 @@
+# Secrets — never commit
+*firebase-adminsdk*.json
+*service-account*.json
+.env
+keystore.properties
+*.jks
+*.keystore
+
+# Backend
+backend/.venv/
+backend/*.db
+backend/*.db-*
+__pycache__/
+*.pyc
+
+# Android
+android/.gradle/
+android/local.properties
+android/app/build/
+android/build/
+
+# Misc
+.DS_Store

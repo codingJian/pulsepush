@@ -1,0 +1,16 @@
+*.iml
+.gradle/
+local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+app/build/
+keystore.properties
+*.jks
+*.keystore
+# Firebase Admin SDK service-account key must NEVER be committed
+*service-account*.json
+*firebase-adminsdk*.json
