@@ -9,6 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # The release-attach step creates a GitHub Release via GITHUB_TOKEN;
+    # without this, the token defaults to read-only and the step 403s.
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
