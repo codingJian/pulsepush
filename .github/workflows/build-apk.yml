@@ -18,8 +18,10 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # No setup-android step: GitHub's ubuntu runners ship the Android SDK
+      # (platforms + build-tools, licenses pre-accepted) at $ANDROID_HOME.
+      # android-actions/setup-android@v3 failed on current runner images,
+      # and AGP auto-downloads any missing SDK component on first build.
 
       - name: Set up Gradle 8.9
         uses: gradle/actions/setup-gradle@v4
